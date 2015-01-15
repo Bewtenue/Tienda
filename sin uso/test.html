@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Practica 08/10/14 Jesus Alberto Ley Ayon</title>
+	</head>
+	
+	<body>
+		<div>Administradores | Editar</div>
+		<a href="administrador_lista.php">Lista Administrador</a>
+		<form name="formlulario" id="form01" method="post" action="">
+			<label for="nombre">Nombre</label>
+			<input type="text" name="nombre" id="nombre" required="required" value="$nombre"/><br />
+			<label for="apellido">Apellido</label>
+			<input type="text" name="apellido" id="apellido" required="required" value="$apellido"/><br />
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email" required="required" value=$correo><br />
+			
+			<input type="button" name="editar" id="editar" value="Editar" onclick="sirvo($idA); return false;" /><br />
+			
+
+		</form>
+		<div id="mensaje"></div>
+		
+	</body>
+	
+	
+	
+	<script src="jquery-1.7.2.js"></script>
+			<script>
+				function editarAdmin(id){
+					var nom = $('#nombre').value();
+					var app = $('#apellido').value();
+					var email = $('#email').value();
+					alert('SPAM');
+					if(confirm("Desea Editar el Registro?")){
+						$.ajax({
+							url		: 'edit_adm.php',
+							type	: 'post',
+							dataType: 'text',
+							data	: 'id='+id+'&nombre='+nom+'&apellido='+app+'&email='+email,
+							success : function(res){
+								$('#mensaje').html('Editado completo');
+							},error: function(){
+								$('#mensaje').html('Error al editar');
+							}
+						})
+					}
+
+
+				function sirvo{
+					alert('si sirvo');
+				}
+		</script>
+	
+	
+</html>

@@ -1,0 +1,15 @@
+body{
+	
+}
+
+
+#cabecera, #menu, #contenido {
+    padding-bottom: 5px;
+    width: 960px;
+}
+#contenido {
+    height: 1200px;
+}
+#cabecera {
+    float: right;
+}

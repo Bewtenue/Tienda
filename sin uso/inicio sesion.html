@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Practica 10/10/14</title>
+	</head>
+	<body>
+		<form>
+			<input type="text" name="nombre" id="nombre" placeholder="Nombre"/>
+			<input type="submit" name="enviar" id="enviar" onclick="obtieneDatos(); return false;" />
+			<div id="mensaje"></div>
+		</form>	
+		
+	</body>
+	
+	
+	<script src="jquery-1.7.2.js"></script>
+			<script>
+				function obtieneDatos(){
+					var nombre = $('#nombre').val();
+					$.ajax({
+						url 	 : 'obtienedatos.php',
+						type 	 : 'post',
+						dataType : 'text',
+						//data	 : 'id='+factura, (sirve para mandar parametros al archivo)
+						success  : function(res){
+							//se encontro archivo y obtengo respuesta
+							$('#mensaje').html(res);
+							/*
+							 if (res == 1){
+							 	$('mensaje').html('todo funciono');
+							 } else{
+							 	$('mensaje').html('algo esta mal');
+							 }
+							 * */
+							
+						},error: function(){
+							//alert('No se encontro el archivo...');
+						}
+						
+					});
+					//$('#mensaje').html(nombre);
+				}
+			
+		</script>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Practica 08/10/14 Jesus Alberto Ley Ayon</title>
+		<script src="jquery-1.7.2.js"></script>
+	</head>
+
+	<body onload="desaparece()">
+		
+		<h2 class="sub-header">Administradores | Agregar</h2>
+		<a id='admin_form'href="#"><h4 class="sub-header">Lista Administrador</h4></a>
+		<form name="formlulario" id="form01" method="post" action="administrador_nuevo.php" enctype="multipart/form-data" onsubmit="return cancelando();">
+			<label for="nombre">Nombre</label>
+			<input type="text" name="nombre" id="nombre" required="required" placeholder="Nombre"/ >
+			<br />
+			<label for="apellido">Apellido</label>
+			<input type="text" name="apellido" id="apellido" required="required"placeholder="Apellido"/>
+			<br />
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email" required="required" placeholder="Email" onblur="verificarCorreo();"/>
+			<br />
+			<label for="imagen">Imagen</label>
+			<div id="imgmuestra"></div>
+			<input type="file" name="imagen" id="imagen" accept="image/*" required="required" onchange="previsualizar(this.files);" onclick="desaparece();"/>
+			<br />
+			<label for="password">Password</label>
+			<input type="password" name="pass" id="pass" required="required" placeholder="Password"/>
+			<br />
+			<input type="submit" name="enviar" id="enviar" value="Enviar" />
+			<br />
+
+		</form>
+		<div id="mensaje"></div>
+
+	</body>
+
+	<script>
+		var bandera = false;
+
+		function verificarCorreo() {
+			
+			var email = $('#email').val();
+			if (email == '') {
+
+			} else {
+
+				$.ajax({
+					url : 'verificaCorreo.php',
+					type : 'post',
+					dataType : 'text',
+					data : 'email=' + email,
+					success : function(res) {
+						if (res == 1) {
+							$('#mensaje').html('Ya existe el correo por favor cambialo');
+							bandera = false;
+
+						}
+						if (res == 0) {
+							$('#mensaje').html('Puedes usar el correo');
+							bandera = true;
+
+						}
+					},
+					error : function() {
+						$('#mensaje').html('Error en la Base de Datos');
+						bandera = false;
+
+					}
+				})
+				return true;
+			}
+
+		}
+
+		function cancelando() {
+			if (bandera) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function previsualizar(files) {
+
+			var file = files[0];
+			var imageType = /image.*/;
+
+			var img = document.createElement("img");
+			img.classList.add("obj");
+			$(img).attr("height", 100);
+			$(img).attr("width", 100);
+			img.file = file;
+			$('#imgmuestra').empty();
+			imgmuestra.appendChild(img);
+			// Assuming that "preview" is a the div output where the content will be displayed.
+
+			var reader = new FileReader();
+			reader.onload = (function(aImg) {
+				return function(e) {
+					aImg.src = e.target.result;
+				};
+			})(img);
+			reader.readAsDataURL(file);
+			$('#imgmuestra').show();
+		}
+
+		function cambiaImagen() {
+			var imagen = $('#imagen').val();
+			$.ajax({
+				url : 'cambiaImagen.php',
+				type : 'post',
+				dataType : 'json',
+				data : 'imagen=' + imagen,
+				success : function(res) {
+
+					$('#imgmuestra').show();
+
+				},
+				error : function() {
+					$('#imgmuestra').hide();
+				}
+			})
+		}
+
+		function desaparece() {
+			$('#imgmuestra').hide();
+		}
+
+
+		$(document).ready(function() {
+			$('#admin_form').click(function() {
+				$('#contenido').load('administrador_lista.php');
+			});
+
+		});
+
+	</script>
+
+</html>
